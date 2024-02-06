@@ -7,6 +7,26 @@ import TShirt from '../TShirt/TShirt';
 
 const Home = () => {
     const [tShirts, setTshirts] =useTshirts();
+    const [cart, setCart] =useState([]);
+
+    const handleAddTCart = (selectedItem) =>{
+        console.log(selectedItem);
+        const exists = cart.find(tShirt => tShirt._id === selectedItem._id);
+        if(!exists){
+            const newCart = [...cart, selectedItem];
+        setCart(newCart);
+        }
+        else{
+            alert('item already added')
+        }
+    }
+
+    const handleRemoveCart = (selectedItem) =>{
+        const rest = cart.filter(tShirt => tShirt._id !== selectedItem._id);
+        setCart(rest)
+    }
+
+
     return (
         <div className='home-container'>
             <div className="tshirt-container">
@@ -15,11 +35,14 @@ const Home = () => {
                     tShirts.map(tShirt => <TShirt
                     key={tShirt.id}
                     tShirt={tShirt}
+                    handleAddTCart={handleAddTCart}
                     ></TShirt>)
                 }
             </div>
             <div className="cart-container">
-                <Cart></Cart>
+                <Cart
+                handleRemoveCart={handleRemoveCart}
+                cart={cart}></Cart>
             </div>
         </div>
     );
